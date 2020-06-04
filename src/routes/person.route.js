@@ -7,14 +7,20 @@
  */
 const KoaRouter = require('koa-router')
 const PersonController = require('../controllers/person.controller')
+// LINEA AGREGADA: referenciamos los esquemas declarados
+const personSchemas = require('../schemas/person.schema')
+// LINEA AGREGADA: referenciamos el middleware de validacion de esquemas
+const schemaValidator = require('../utils/schema-validator')
 const router = new KoaRouter({ prefix: '/person' })
 const controller = new PersonController()
-
+// LINEA AGREGADA: creamos una instancia del validador pasandole la parte del request que queremos validar en este caso (params) y el esquema apropiado
+const byIndexValidator = schemaValidator({ params: personSchemas.byIndex })
+// NUEVA LINEA: creamos una instancia del validador pasandole la parte del request que queremos validar en este caso (body) y el esquema apropiado
+const postValidator = schemaValidator({ body: personSchemas.post })
 // GET /person/29
-router.get('person/byIndex', '/:index', controller.getByIndex)
+router.get('person/byIndex', '/:index', byIndexValidator, controller.getByIndex)
 
-// POST
-router.post('person/post', '/', controller.save)
+router.post('person/post', '/', postValidator, controller.save)
 
 // GET
 router.get('person/query', '/', controller.getByQuery)
