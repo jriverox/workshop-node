@@ -1,3 +1,6 @@
+// LINEA AGREGADA: reemplazaremos los ctx.throw por throw errorFactory.
+const errorFactory = require('../utils/logging/error-factory')
+
 const validateRequest = (contextPart, label, schema, options) => {
   if (!schema) return
   const { error } = schema.validate(contextPart, options)
@@ -16,7 +19,8 @@ const validate = (schema) => (ctx, next) => {
     }
     return next()
   } catch (error) {
-    ctx.throw(422, error.message)
+    // LINEA AGREGADA: Manejamos los errores operacionales usando nuestra fabrica de errores
+    throw errorFactory.InvalidInputError(`Solicitud no válida: ${error.message}`)
   }
 }
 
