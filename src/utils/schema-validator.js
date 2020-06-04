@@ -1,4 +1,3 @@
-// utils/schema-validator.js
 const validateRequest = (contextPart, label, schema, options) => {
   if (!schema) return
   const { error } = schema.validate(contextPart, options)
@@ -6,7 +5,7 @@ const validateRequest = (contextPart, label, schema, options) => {
     throw new Error(`Invalid ${label} - ${error.message}`)
   }
 }
-
+// middleware de validacion que usaremos para validar los request pasandole un determinado esquema
 const validate = (schema) => (ctx, next) => {
   try {
     validateRequest(ctx.headers, 'Headers', schema.headers, { allowUnknown: true })
