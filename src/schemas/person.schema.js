@@ -17,6 +17,10 @@ const post = Joi.object().keys({
   email: Joi.string().email().required(),
   phone: Joi.string().required(),
   address: Joi.string().required(),
+  preferences: Joi.object({
+    hobby: Joi.string(),
+    color: Joi.string().valid('rojo', 'azul', 'verde'),
+  }),
 })
 
 module.exports = {

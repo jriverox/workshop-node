@@ -45,6 +45,16 @@ const schema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    preferences: {
+      hobby: {
+        type: String,
+        required: false,
+      },
+      color: {
+        type: String,
+        required: false,
+      },
+    },
   },
   {
     collection: 'people',
