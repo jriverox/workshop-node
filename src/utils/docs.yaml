@@ -1,0 +1,143 @@
+swagger: "2.0"
+info:
+  title: "API Rest demo usando node.js + koa.js"
+  version: "1.0"
+  description: "API Rest de ejemplo usando koa, mongoose"
+basePath: /
+schemes:
+  - http
+paths:
+  /person/{index}:
+    get:
+      tags:
+        - Person
+      summary: "Permite obtener los datos de una persona por el campo index"
+      parameters:
+        - in: path
+          name: index
+          type: integer
+          required: true
+          description: "Identificador unico de la persona"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Person"
+        "404":
+          description: "Recurso inexistente"
+          schema:
+            $ref: "#/definitions/AppError"
+        "422":
+          description: "Formato incorrecto"
+          schema:
+            $ref: "#/definitions/AppError"
+        "500":
+          description: "Error desconocido"
+          schema:
+            $ref: "#/definitions/AppError"
+  /person:
+    post:
+      summary: "Permite guardar los datos de una nueva persona o actualizar lo de una existente"
+      parameters:
+        - in: body
+          required: true
+          name: Person
+          description: "Datos de la persona"
+          schema:
+            $ref: "#/definitions/Person"
+      responses:
+        200:
+          description: Actualizado
+          schema:
+            $ref: "#/definitions/Person"
+        201:
+          description: Creado
+          schema:
+            $ref: "#/definitions/Person"
+        422:
+          description: "Formato incorrecto"
+          schema:
+            $ref: "#/definitions/AppError"
+        500:
+          description: "Error desconocido"
+          schema:
+            $ref: "#/definitions/AppError"
+      deprecated: false
+definitions:
+  Person:
+    description: "Representa los datos de un contacto o persona"
+    type: object
+    properties:
+      index:
+        description: "Valor numerico que identifica a a la persona"
+        type: integer
+      age:
+        description: "Edad de la persona"
+        type: integer
+      eyeColor:
+        description: "Color de ojos"
+        type: string
+        enum:
+          - black
+          - blue
+          - green
+          - brown
+          - grey
+      name:
+        description: "Nombre y Apellido"
+        type: string
+      gender:
+        description: "Genero"
+        type: string
+        enum:
+          - male
+          - female
+      company:
+        description: "Compañía para la que labora"
+        type: string
+      country:
+        description: "Pais de origen"
+        type: string
+      email:
+        description: "Dirección decorreo electrónico"
+        type: string
+      phone:
+        description: "Número telefónico"
+        type: string
+      address:
+        description: "Dirección de habitación"
+        type: string
+  AppError:
+    type: object
+    properties:
+      message:
+        description: "Mensaje del error"
+        type: string
+      name:
+        description: "Identificador del Error"
+        type: string
+        enum:
+          - InvalidInputError
+          - UnauthorizedError
+          - OperationNotAllowedError
+          - NotFoundError
+          - DuplicateItemError
+          - ConflictError
+          - BadFormatError
+          - UnknownError
+      status:
+        description: "Codigo Http"
+        type: integer
+      date:
+        description:  "Fecha en la que ocurrió el error"
+        type: string
+      isOperational:
+        description: "Si es verdadero indica que es un error controlado"
+        type: boolean
+      innerException:
+        description: "Error original"
+      expose:
+        description: "Flag que indica se debe mostrar en la respuesta http"
+        type: boolean
